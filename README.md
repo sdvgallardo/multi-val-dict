@@ -2,7 +2,9 @@
 A multi-value dictionary
 
 This is a command line program written in Python.
-It stores a multi-value dictionary in memory. All keys and members are strings. 
+It stores a multi-value dictionary in memory. All keys and members are strings. It can treat inputs "in quotes" as one string.
+
+### Commands
 It supports the following commands:
 
 - KEYS, MEMBERS, ADD, REMOVE, REMOVEALL, CLEAR, KEYEXISTS, MEMBEREXISTS, ALLMEMBERS, and ITEMS
