@@ -39,6 +39,6 @@ Then execute the tests by running them with Pytest:
 ```
 pytest tests.py
 ```
-There are 8 tests written with a total of 14 assertions, testing various pieces of the multi-value dictionary program.
+There are 11 tests written with a total of 25 assertions, testing various pieces of the multi-value dictionary program.
 
 

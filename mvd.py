@@ -3,11 +3,22 @@ import shlex
 # Initialize an empty dictionary
 dictionary = { }
 
+def listKeys():
+    retval = ""
+    if len(dictionary) < 1:
+        retval = "No keys"
+        print(retval)
+    i = 1
+    for key in dictionary:
+        retval = "%d) %s" % (i, key)
+        print (retval)
+        i = i + 1
+    return retval
+
 def listMembers(key):
     retval = ""
     if key in dictionary:
         i = 1
-        retval = ""
         for value in dictionary[key]: # Prints numbered list of keys available
             retval = "%d) %s" % (i, value)
             print(retval)
@@ -18,8 +29,11 @@ def listMembers(key):
     return retval # Returns either the error or the last value, for testing
 
 def listAll(keys): 
-    i = 1
     retval = ""
+    i = 1
+    if len(dictionary) < 1:
+        retval = "No keys"
+        print(retval)
     for key in dictionary:
         for value in dictionary[key]:
             if(keys): # Keys boolean indicates if we include Keys in the output
@@ -58,26 +72,41 @@ def removeMember(key, value):
         retval = "ERROR: Key does not exist"
     return retval
 
+def removeAllMembers(key):
+    retval = ""
+    if key in dictionary:
+        del dictionary[key] # Remove the key (and all values) from the dictionary
+        retval = "Removed"
+    else:
+        retval = "ERROR: Key does not exist"
+    return retval
+
+def keyOrMemberExists(key, member=None):
+    retval = False # Default to False in case the key doesn't exist
+    if key in dictionary:
+        if member: # If a member is provided, we will check if it exists under the provided key
+            retval = True if member in dictionary[key] else False
+        else: # If just a key is provided, we will only check if it exists in the dictionary
+            retval = True if key in dictionary else False
+    return retval
+
 def dictLoop():
     while True:
-        # Get user input
-        user_input = input("Enter a command (or 'HELP' for help): ")
+        user_input = input("Enter a command (or 'HELP' for help): ")    # Get user input
 
         # Split input into different words
-        words = shlex.split(user_input) # Use a specific split to allow for quoted inputs
+        try:
+            words = shlex.split(user_input) # Use a specific split to allow for quoted inputs
+        except ValueError:
+            print("No closing quotation. Please try again.") # Catch an exception where only one quotation is provided
+            continue
 
-        # Get the desired command
-        command = words[0].upper()
+        command = words[0].upper()  # Get the desired command
 
         match command:
             case "KEYS":
                 # Returns all keys in the dictionary
-                if len(dictionary) < 1:
-                    print("No keys")
-                i = 1
-                for key in dictionary:
-                    print("%d) %s" % (i, key))
-                    i = i + 1
+                listKeys()
             case "MEMBERS":
                 # Returns the collection of strings for a given key
                 if len(words) != 2:
@@ -100,10 +129,8 @@ def dictLoop():
                 # Removes all members for a key and the key from the dictionary
                 if len(words) != 2:
                     print("ERROR: Must provide a key -- REMOVEALL [key]")
-                if words[1] in dictionary:
-                    del dictionary[words[1]]
                 else:
-                    print("ERROR: Key does not exist")
+                    print(removeAllMembers(words[1]))                
             case "CLEAR":
                 # Removes all keys and all members from the dictionary
                 if len(dictionary) < 1:
@@ -116,28 +143,19 @@ def dictLoop():
                 if len(words) != 2:
                     print("ERROR: Must provide a key -- KEYEXISTS [key]")
                 else:
-                    print(True if words[1] in dictionary else False) # Ternary operator that does the if/else check in one line
+                    print(keyOrMemberExists(words[1]))
             case "MEMBEREXISTS":
                 # Returns whether a member exists within a key
                 if len(words) != 3:
                     print("ERROR: Must provide a key and a member -- MEMBEREXISTS [key] [member]")
                 else:        
-                    if words[1] in dictionary:
-                        print(True if words[2] in dictionary[words[1]] else False) # Similar ternary operator as above
-                    else:
-                        print("False")
+                    print(keyOrMemberExists(words[1], words[2]))
             case "ALLMEMBERS":
                 # Returns all the members in the dictionary
-                if len(dictionary) < 1:
-                    print("No keys")
-                else: 
-                    listAll(False) # Provide False, meaning we don't want keys in this list
+                listAll(False) # Provide False, meaning we don't want keys in this list
             case "ITEMS":
                 # Returns all keys in the dictionary and all their members
-                if len(dictionary) < 1:
-                    print("No keys")
-                else: 
-                    listAll(True) # Provide True so keys will be included
+                listAll(True) # Provide True so keys will be included
             case "HELP":
                 # Returns a list of all possible commands
                 print("KEYS MEMBERS ADD REMOVE REMOVEALL CLEAR KEYEXISTS MEMBEREXISTS ALLMEMBERS ITEMS HELP QUIT")
