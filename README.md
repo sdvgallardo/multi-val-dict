@@ -16,15 +16,23 @@ In addition, I have added support for:
 Further information can be found in the Documentation folder. 
 
 ### Running
-Clone a copy of this repo to your machine:
+The commands in this section are intended for a **Linux-based system**. I use the Linux subsystem for Windows. 
+
+Make sure your version of Python is updated to **Python 3.10**. You may run into interpretation errors if you attempt to run the program with an earlier version.
+
+To begin, clone a copy of this repo to your machine:
 ```
 git clone https://github.com/sdvgallardo/multi-val-dict.git
 ```
-Execute the program by running it with Python 3:
+Move to the folder you just cloned:
+```
+cd multi-val-dict
+```
+Then, execute the program by running it with Python 3:
 ```
 python3 mvd.py
 ```
-Then enter your desired commands, adding members to the multi-value dictionary. 
+Then enter your desired commands, adding members to the multi-value dictionary and manipulating it as desired.
 
 When finished, enter `QUIT` at the prompt, your final dictionary will be provided and the program will cease operation. Any members entered in the dictionary will be lost. 
 
